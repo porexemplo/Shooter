@@ -12,6 +12,7 @@ S_HEIGHT = .05*HEIGHT
 SCREEN = pg.display.set_mode((WIDTH, HEIGHT))
 
 FPS = 60
+VEL = .006*WIDTH
 
 def init_window(rec_1, rec_2):
     pg.display.set_caption('Shooter Game')
@@ -30,6 +31,20 @@ def get_ship(ship: int):
     return image
 
 
+def move_ship_1(pressed_keys, ship):
+    if pressed_keys[pg.K_a]: ship.x -= VEL
+    if pressed_keys[pg.K_d]: ship.x += VEL
+    if pressed_keys[pg.K_s]: ship.y += VEL
+    if pressed_keys[pg.K_w]: ship.y -= VEL
+
+
+def move_ship_2(pressed_keys, ship):
+    if pressed_keys[pg.K_LEFT]: ship.x -= VEL
+    if pressed_keys[pg.K_RIGHT]: ship.x += VEL
+    if pressed_keys[pg.K_DOWN]: ship.y += VEL
+    if pressed_keys[pg.K_UP]: ship.y -= VEL
+
+
 def main():
     clock = pg.time.Clock()
 
@@ -41,7 +56,10 @@ def main():
         for event in pg.event.get():
             if event.type == pg.QUIT: return pg.quit()
         
-        init_window(rec_1, rec_2)        
+        init_window(rec_1, rec_2)
+        pressed_keys = pg.key.get_pressed()
+        move_ship_1(pressed_keys, rec_1)
+        move_ship_2(pressed_keys, rec_2)
 
 
 if __name__ == '__main__':
