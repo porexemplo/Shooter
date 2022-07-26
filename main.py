@@ -11,12 +11,15 @@ S_HEIGHT = .05*HEIGHT
 
 SCREEN = pg.display.set_mode((WIDTH, HEIGHT))
 
+BORDER = pg.Rect(WIDTH/2 - .005*WIDTH , 0, .01*WIDTH, HEIGHT)
+
 FPS = 60
 VEL = .006*WIDTH
 
 def init_window(rec_1, rec_2):
     pg.display.set_caption('Shooter Game')
     SCREEN.fill((255, 255, 255))
+    pg.draw.rect(SCREEN, (0, 0, 0), BORDER)
     SCREEN.blit(get_ship(1), (rec_1.x, rec_1.y))
     SCREEN.blit(get_ship(2), (rec_2.x, rec_2.y))
     pg.display.update()
@@ -32,17 +35,17 @@ def get_ship(ship: int):
 
 
 def move_ship_1(pressed_keys, ship):
-    if pressed_keys[pg.K_a]: ship.x -= VEL
-    if pressed_keys[pg.K_d]: ship.x += VEL
-    if pressed_keys[pg.K_s]: ship.y += VEL
-    if pressed_keys[pg.K_w]: ship.y -= VEL
+    if pressed_keys[pg.K_a] and ship.x > VEL: ship.x -= VEL
+    if pressed_keys[pg.K_d] and ship.x + VEL < BORDER.x - ship.width: ship.x += VEL
+    if pressed_keys[pg.K_s] and ship.y + VEL + ship.height < HEIGHT: ship.y += VEL
+    if pressed_keys[pg.K_w] and ship.y > VEL: ship.y -= VEL
 
 
 def move_ship_2(pressed_keys, ship):
-    if pressed_keys[pg.K_LEFT]: ship.x -= VEL
-    if pressed_keys[pg.K_RIGHT]: ship.x += VEL
-    if pressed_keys[pg.K_DOWN]: ship.y += VEL
-    if pressed_keys[pg.K_UP]: ship.y -= VEL
+    if pressed_keys[pg.K_LEFT] and ship.x > VEL + BORDER.x + BORDER.width: ship.x -= VEL
+    if pressed_keys[pg.K_RIGHT] and ship.x + ship.width + VEL < WIDTH: ship.x += VEL
+    if pressed_keys[pg.K_DOWN] and ship.y + VEL + ship.height < HEIGHT: ship.y += VEL
+    if pressed_keys[pg.K_UP] and ship.y > VEL: ship.y -= VEL
 
 
 def main():
